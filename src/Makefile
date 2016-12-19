@@ -7,5 +7,5 @@ clean:
 	rm -f *~ *.class *.java.orig
 
 test: all
-	java -ea -Xmx2G Main
+	java -ea -Xmx6G Main
 
