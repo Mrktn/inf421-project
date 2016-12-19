@@ -4,13 +4,19 @@
 
 public class Pair implements Comparable<Pair>
 {
-    public final int x;
-    public final int y;
+    public final byte x;
+    public final byte y;
 
-    public Pair(int x, int y)
+    public Pair(byte x, byte y)
     {
         this.x = x;
         this.y = y;
+    }
+
+    public Pair(int x, int y)
+    {
+        this.x = (byte)x;
+        this.y = (byte)y;
     }
 
     @Override

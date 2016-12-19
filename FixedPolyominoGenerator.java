@@ -1,5 +1,6 @@
 import java.util.*;
 import java.math.*;
+import java.lang.instrument.Instrumentation;
 
 class FixedPolyominoGenerator
 {
@@ -124,19 +125,20 @@ class FixedPolyominoGenerator
     // 0 est positif
     private static int sgn(int x)
     {
-    	return x < 0 ? (-1) : 1;
+        return x < 0 ? (-1) : 1;
     }
+
+
     /*
      * Algorithme de Redelmeier (Counting Polyominoes: Yet Another Attack, D. H. Redelmeier, 1979)
      */
-
-
-    private static ArrayList<BitList> redelpol(int n, int k, BitList parent, LinkedPoint untried, boolean[][] field, LinkedPoint[][] neighs)
+    private static ArrayList<BitList> redelpol(int n, int k, BitList parent, int[][] sublimeUntried, int startIndex, int endIndex, boolean[][] field)
     {
         if(k == n)
         {
             ArrayList<BitList> ret = new ArrayList<BitList>();
-            ret.add(new BitList(parent.bits));
+            ret.add(new BitList(parent.lst));
+            //System.out.println("+1 ma gueule !");
             return ret;
         }
 
@@ -144,75 +146,70 @@ class FixedPolyominoGenerator
         {
             ArrayList<BitList> l = new ArrayList<BitList>();
 
-            while(untried != null)
+            for(int i = startIndex; i <= endIndex; ++i)
             {
-                Pair p = untried.loc;
-                untried = untried.next;
+                int x = sublimeUntried[i][0], y = sublimeUntried[i][1];
 
-                field[p.x+n-1][p.y+1] = false;
-                parent.setBit(FixedPolyominoGenerator.sgn(p.x)*(Math.abs(p.x) + n*p.y));
+                field[x+n-1][y+1] = false;
+                //parent.setBit(sgn(x) * (Math.abs(x) + n*p.y));
+                parent.lst[k] = (short) (sgn(x) * (Math.abs(x) + n*y));
 
-                if(neighs[p.x+n-1][p.y+1] != null){
-                	untried = neighs[p.x+n-1][p.y+1];
-                }
+                int cursor = 0;
                 boolean a = false, b = false, c = false, d = false;
 
 
-                // Ajout des voisins
-                if(p.x+1 < n && field[p.x+1+n-1][p.y+1])
+                if(x+1 < n && (field[x+1+n-1][y+1]))
                 {
-                    field[p.x+1+n-1][p.y+1] = false;
-                    untried = new LinkedPoint(new Pair(p.x+1, p.y), untried);
+                    field[x+1+n-1][y+1] = false;
+                    cursor++;
+                    sublimeUntried[cursor+endIndex][0] = x+1;
+                    sublimeUntried[cursor+endIndex][1] = y;
                     a = true;
                 }
 
-                if(p.y + 1 < n && field[p.x+n-1][p.y+1+1])
+                if(y + 1 < n && (field[x+n-1][y+1+1]))
                 {
-                    field[p.x+n-1][p.y+1+1] = false;
-                    untried = new LinkedPoint(new Pair(p.x, p.y+1), untried);
+                    field[x+n-1][y+1+1] = false;
+
+                    cursor++;
+                    sublimeUntried[cursor+endIndex][0] = x;
+                    sublimeUntried[cursor+endIndex][1] = y+1;
                     b = true;
                 }
 
-                if(p.x-1 > -n && field[p.x-1+n-1][p.y+1])
+                if(x-1 > -n && (field[x-1+n-1][y+1]))
                 {
-                	//if(p.x-1 < 0) System.out.println("yay");
-                    field[p.x-1+n-1][p.y+1] = false;
-                    untried = new LinkedPoint(new Pair(p.x-1, p.y), untried);
+                    field[x-1+n-1][y+1] = false;
+
+                    cursor++;
+                    sublimeUntried[cursor+endIndex][0] = x-1;
+                    sublimeUntried[cursor+endIndex][1] = y;
+
                     c = true;
                 }
 
-                if(p.y-1 >= 0 && field[p.x+n-1][p.y-1+1])
+                if(y-1 >= -1 && (field[x+n-1][y-1+1]))
                 {
-                    field[p.x+n-1][p.y-1+1] = false;
-                    untried = new LinkedPoint(new Pair(p.x, p.y-1), untried);
+                    field[x+n-1][y-1+1] = false;
+
+                    cursor++;
+                    sublimeUntried[cursor+endIndex][0] = x;
+                    sublimeUntried[cursor+endIndex][1] = y-1;
+
                     d = true;
+
                 }
 
-                l.addAll(redelpol(n, k+1, parent, untried, field, neighs));
+                l.addAll(redelpol(n, k+1, parent, sublimeUntried, i+1, endIndex+cursor, field));
 
-                // Retrait des voisins
                 if(a)
-                {
-                    untried = untried.next;
-                    field[p.x+1+n-1][p.y+1] = true;
-                }
+                    field[x+1+n-1][y+1] = true;
                 if(b)
-                {
-                    untried = untried.next;
-                    field[p.x+n-1][p.y+1+1] = true;
-                }
+                    field[x+n-1][y+1+1] = true;
                 if(c)
-                {
-                    untried = untried.next;
-                    field[p.x-1+n-1][p.y+1] = true;
-                }
+                    field[x-1+n-1][y+1] = true;
                 if(d)
-                {
-                    untried = untried.next;
-                    field[p.x+n-1][p.y-1+1] = true;
-                }
-
-                parent.clearBit(FixedPolyominoGenerator.sgn(p.x)*(Math.abs(p.x) + n*p.y));
+                    field[x+n-1][y-1+1] = true;
             }
 
             return l;
@@ -220,12 +217,12 @@ class FixedPolyominoGenerator
     }
 
 
-
     public static ArrayList<BitList> generateFixedPolyominoesRedelmeier(int n)
     {
         long startTime = System.currentTimeMillis();
-        BitList initialParent = new BitList();
-        LinkedPoint[][] neighs = new LinkedPoint[2*n-1][n+1];
+        BitList initialParent = new BitList(n);
+
+        int[][] sublimeUntried = new int[(2*n-1)*(n+1)][2];
 
         // field[i][j] = état de la case [i-n+1][j-1]
         boolean[][] field = new boolean[2*n-1][n+1];
@@ -234,12 +231,17 @@ class FixedPolyominoGenerator
             for(int j = 0; j < n+1; ++j)
                 field[i][j] = true;
 
+        // On bloque les cases initialement interdites
         for(int k = 0; k < 2*n-1; ++k)
             field[k][0] = false;
         for(int k = 0; k < n-1; ++k)
             field[k][1] = false;
 
-        ArrayList<BitList> ret = redelpol(n, 0, initialParent, new LinkedPoint(new Pair(0,0), null), field, neighs);
+        sublimeUntried[0][0] = 0;
+        sublimeUntried[0][1] = 0;
+        field[n-1][1] = false;
+
+        ArrayList<BitList> ret = redelpol(n, 0, initialParent, sublimeUntried, 0, 0, field);
         System.out.println(ret.size());
         long endTime = System.currentTimeMillis();
         System.out.println("Fixed execution time: " + (endTime-startTime) + "ms");

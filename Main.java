@@ -11,7 +11,7 @@ public class Main
     {
         //for(int i = 2; i < 5; ++i)
         long startTime = System.currentTimeMillis();
-        FreePolyominoGenerator.generateFreePolyominoesRedelmeier(8);
+        FreePolyominoGenerator.generateFreePolyominoesRedelmeier(14);
         long endTime = System.currentTimeMillis();
         //System.out.println("Total execution time: " + (endTime-startTime) + "ms");
 
