@@ -1,56 +1,29 @@
 import java.util.*;
 import java.math.*;
 
-class FixedPolyominoGenerator
+// L'algorithme de Redelmeier pour compter (et seulement compter) efficacement les polyominos fixes
+class FixedPolyominoCounter
 {
-
-
-    private static class LinkedPoint
-    {
-        public Pair loc;
-        public LinkedPoint next;
-
-        LinkedPoint(Pair nloc, LinkedPoint nnext)
-        {
-            this.loc = nloc;
-            this.next = nnext;
-        }
-    }
-
-    // 0 est positif
-    private static int sgn(int x)
-    {
-        return x < 0 ? (-1) : 1;
-    }
-
-
     /*
      * Algorithme de Redelmeier (Counting Polyominoes: Yet Another Attack, D. H. Redelmeier, 1979)
      */
-    private static ArrayList<BitList> redelpol(int n, int k, short[] parent, int[][] untried, int startIndex, int endIndex, boolean[][] field)
+    private static long redelpol(int n, int k, int[][] untried, int startIndex, int endIndex, boolean[][] field)
     {
         if(k == n)
-        {
-            ArrayList<BitList> ret = new ArrayList<BitList>();
-            ret.add(new BitList(parent));
-            return ret;
-        }
+            return 1;
 
         else
         {
-            ArrayList<BitList> l = new ArrayList<BitList>();
+            long l = 0;
 
             for(int i = startIndex; i <= endIndex; ++i)
             {
                 int x = untried[i][0], y = untried[i][1];
 
                 field[x+n-1][y+1] = false;
-                //parent.setBit(sgn(x) * (Math.abs(x) + n*p.y));
-                parent[k] = (short) (sgn(x) * (Math.abs(x) + n*y));//lst[k] = ;
 
                 int cursor = 0;
                 boolean a = false, b = false, c = false, d = false;
-
 
                 if(x+1 < n && (field[x+1+n-1][y+1]))
                 {
@@ -64,7 +37,6 @@ class FixedPolyominoGenerator
                 if(y + 1 < n && (field[x+n-1][y+1+1]))
                 {
                     field[x+n-1][y+1+1] = false;
-
                     cursor++;
                     untried[cursor+endIndex][0] = x;
                     untried[cursor+endIndex][1] = y+1;
@@ -74,27 +46,22 @@ class FixedPolyominoGenerator
                 if(x-1 > -n && (field[x-1+n-1][y+1]))
                 {
                     field[x-1+n-1][y+1] = false;
-
                     cursor++;
                     untried[cursor+endIndex][0] = x-1;
                     untried[cursor+endIndex][1] = y;
-
                     c = true;
                 }
 
                 if(y-1 >= -1 && (field[x+n-1][y-1+1]))
                 {
                     field[x+n-1][y-1+1] = false;
-
                     cursor++;
                     untried[cursor+endIndex][0] = x;
                     untried[cursor+endIndex][1] = y-1;
-
                     d = true;
-
                 }
 
-                l.addAll(redelpol(n, k+1, parent, untried, i+1, endIndex+cursor, field));
+                l += redelpol(n, k+1, untried, i+1, endIndex+cursor, field);
 
                 if(a)
                     field[x+1+n-1][y+1] = true;
@@ -110,11 +77,9 @@ class FixedPolyominoGenerator
         }
     }
 
-
-    public static ArrayList<BitList> generateFixedPolyominoes(int n)
+    public static long countFixedPolyominoes(int n)
     {
         long startTime = System.currentTimeMillis();
-        short[] initialParent = new short[n];
 
         int[][] untried = new int[(2*n-1)*(n+1)][2];
 
@@ -135,13 +100,11 @@ class FixedPolyominoGenerator
         untried[0][1] = 0;
         field[n-1][1] = false;
 
-        ArrayList<BitList> ret = redelpol(n, 0, initialParent, untried, 0, 0, field);
-        System.out.println(ret.size());
+        long ret = redelpol(n, 0, untried, 0, 0, field);
+        System.out.println(ret);
         long endTime = System.currentTimeMillis();
-        System.out.println("Fixed execution time: " + (endTime-startTime) + "ms");
+        System.out.println("Fixed counter execution time: " + (endTime-startTime) + "ms");
 
         return ret;
     }
-
-
 }

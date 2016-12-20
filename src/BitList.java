@@ -14,24 +14,31 @@ class BitList implements Comparable
 
     BitList(short[] nlst)
     {
-    	lst = new short[nlst.length];
-    	for(int i = 0; i < nlst.length; ++i)
-    		lst[i] = nlst[i];
+        lst = new short[nlst.length];
+        for(int i = 0; i < nlst.length; ++i)
+        {
+            lst[i] = nlst[i];
+        }
+    }
+
+    public void set(int k, short v)
+    {
+        this.lst[k] = v;
     }
 
     @Override
     public int compareTo(Object o)
     {
-    	BitList other = (BitList)o;
+        BitList other = (BitList)o;
 
-    	for(int i = 0; i < lst.length; ++i)
-    	{
-    		if(this.lst[i] < other.lst[i])
-    			return -1;
-    		if(this.lst[i] > other.lst[i])
-    			return 1;
-    	}
+        for(int i = 0; i < lst.length; ++i)
+        {
+            if(this.lst[i] < other.lst[i])
+                return -1;
+            if(this.lst[i] > other.lst[i])
+                return 1;
+        }
 
-    	return 0;
+        return 0;
     }
 }

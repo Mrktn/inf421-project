@@ -12,7 +12,7 @@ class FreePolyominoGenerator
         // calcul max x
         for(int p = 0; p < n; ++p)
         {
-        	short k = fix.lst[p];
+            short k = fix.lst[p];
             int i = k%n, j = k/n;
             m = Math.max(i, m);
         }
@@ -29,7 +29,7 @@ class FreePolyominoGenerator
         // calcul max y
         for(int p = 0; p < n; ++p)
         {
-        	short k = fix.lst[p];
+            short k = fix.lst[p];
             int i = k%n, j = k/n;
             m = Math.max(j, m);
         }
@@ -38,7 +38,7 @@ class FreePolyominoGenerator
         return res;
     }
 
-    public static BitList codeRotate45(int n, BitList fix)
+    public static BitList codeRotate90(int n, BitList fix)
     {
         BitList res = new BitList(n);
         int m = -1;
@@ -46,7 +46,7 @@ class FreePolyominoGenerator
         // calcul max x
         for(int p = 0; p < n; ++p)
         {
-        	short k = fix.lst[p];
+            short k = fix.lst[p];
             int i = k%n, j = k/n;
             m = Math.max(i, m);
         }
@@ -60,7 +60,7 @@ class FreePolyominoGenerator
         - Commencer par récupérer les fixed
         - Puis tant que c'est possible
             - en récupérer un dans la liste des fixed, on le nomme pol plus loin
-            - calculer toutes ses similitudes (rot45, rot45², rot45³, symx, symy, rot45osymx, rot45osymy)
+            - calculer toutes ses similitudes (rot90, rot90², rot90³, symx, symy, rot90osymx, rot90osymy)
             - on décide que le représentant est pol, et il ne reste qu'à virer les similitudes
     */
     /*public static ArrayList<BigInteger> generateFreePolyominoes(int n)
@@ -74,11 +74,11 @@ class FreePolyominoGenerator
             ArrayList<BitList> similitudes = new ArrayList<BigInteger>();
             similitudes.add(codeReflecty(n, pol));
             similitudes.add(codeReflectx(n, pol));
-            similitudes.add(codeRotate45(n, pol));
-            similitudes.add(codeRotate45(n, codeRotate45(n, pol)));
-            similitudes.add(codeRotate45(n, codeRotate45(n, codeRotate45(n, pol))));
-            similitudes.add(codeRotate45(n, codeReflecty(n, pol)));
-            similitudes.add(codeRotate45(n, codeReflectx(n, pol)));
+            similitudes.add(codeRotate90(n, pol));
+            similitudes.add(codeRotate90(n, codeRotate90(n, pol)));
+            similitudes.add(codeRotate90(n, codeRotate90(n, codeRotate90(n, pol))));
+            similitudes.add(codeRotate90(n, codeReflecty(n, pol)));
+            similitudes.add(codeRotate90(n, codeReflectx(n, pol)));
 
             for(BigInteger b : similitudes)
                 if(b.compareTo(pol) != 0)
@@ -96,12 +96,12 @@ class FreePolyominoGenerator
      */
     public static void normalize(short[] pol)
     {
-    	int n = (short)pol.length;
+        int n = (short)pol.length;
         int minx = n, miny = n;
 
         for(int p = 0; p < n; ++p)
         {
-        	short k = pol[p];
+            short k = pol[p];
             int sgn = k < 0 ? -1 : 1;
             k*=sgn;
             int i = sgn*(k%n), j = (k/n);
@@ -111,7 +111,7 @@ class FreePolyominoGenerator
 
         for(int p = 0; p < n; ++p)
         {
-        	short k = pol[p];
+            short k = pol[p];
             int sgn = k < 0 ? -1 : 1;
             k*= (short)sgn;
             int i = (sgn)*(k%n), j = k/n;
@@ -122,17 +122,19 @@ class FreePolyominoGenerator
     /*
      * Même fonction sur le principe, mais génère à partir de l'algorithme de Redelmeier.
      */
-    public static TreeSet<BitList> generateFreePolyominoesRedelmeier(int n)
+    public static TreeSet<BitList> generateFreePolyominoes(int n)
     {
-        ArrayList<BitList> fixed = FixedPolyominoGenerator.generateFixedPolyominoesRedelmeier(n);
+        ArrayList<BitList> fixed = FixedPolyominoGenerator.generateFixedPolyominoes(n);
         TreeSet<BitList> ret = new TreeSet<BitList>();
         TreeSet<BitList> bucket = new TreeSet<BitList>();
 
         long startTime = System.currentTimeMillis();
 
+        BitList[] similitudes = new BitList[7];
+
         for(int i = 0; i < fixed.size(); ++i)
         {
-        	BitList pol = fixed.get(i);
+            BitList pol = fixed.get(i);
 
             normalize(pol.lst);
             Arrays.sort(pol.lst);
@@ -142,26 +144,32 @@ class FreePolyominoGenerator
 
             ret.add(pol);
 
-            LinkedList<BitList> similitudes = new LinkedList<BitList>();
             BitList refy = codeReflecty(n, pol);
             BitList refx = codeReflectx(n, pol);
-            BitList rot45 = codeRotate45(n, pol), rot452 = codeRotate45(n, rot45), rot453 = codeRotate45(n, rot452);
-            BitList rot45y = codeRotate45(n, refy), rot45x = codeRotate45(n, refx);
+            BitList rot90 = codeRotate90(n, pol), rot902 = codeRotate90(n, rot90), rot903 = codeRotate90(n, rot902);
+            BitList rot90y = codeRotate90(n, refy), rot90x = codeRotate90(n, refx);
 
-            Arrays.sort(refy.lst); Arrays.sort(refx.lst); Arrays.sort(rot45.lst); Arrays.sort(rot452.lst); Arrays.sort(rot453.lst); Arrays.sort(rot45x.lst); Arrays.sort(rot45y.lst);
-            similitudes.add(refy);
-            similitudes.add(refx);
-            similitudes.add(rot45);
-            similitudes.add(rot452);
-            similitudes.add(rot453);
-            similitudes.add(rot45y);
-            similitudes.add(rot45x);
+            Arrays.sort(refy.lst);
+            Arrays.sort(refx.lst);
+            Arrays.sort(rot90.lst);
+            Arrays.sort(rot902.lst);
+            Arrays.sort(rot903.lst);
+            Arrays.sort(rot90x.lst);
+            Arrays.sort(rot90y.lst);
 
-            for(BitList b : similitudes)
+            similitudes[0] = (refy);
+            similitudes[1] = (refx);
+            similitudes[2] = (rot90);
+            similitudes[3] = (rot902);
+            similitudes[4] = (rot903);
+            similitudes[5] = (rot90y);
+            similitudes[6] = (rot90x);
+
+            for(int j = 0; j < 7; ++j)
             {
-                if(b.compareTo(pol) != 0)
+                if(!similitudes[j].equals(pol))
                 {
-                    bucket.add(b);
+                    bucket.add(similitudes[j]);
                 }
             }
         }

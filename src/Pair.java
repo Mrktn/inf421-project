@@ -7,12 +7,6 @@ public class Pair implements Comparable<Pair>
     public final byte x;
     public final byte y;
 
-    public Pair(byte x, byte y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
     public Pair(int x, int y)
     {
         this.x = (byte)x;

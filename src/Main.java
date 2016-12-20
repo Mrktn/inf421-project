@@ -4,14 +4,35 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.*;
 import java.math.BigInteger;
-
+import java.io.*;
 public class Main
 {
+    public static int serialize(Object obj) throws IOException
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(obj);
+        return baos.toByteArray().length;
+    }
+
     public static void main(String[] args)
     {
-        //for(int i = 2; i < 5; ++i)
+        int sz = 0;
+
+        /* First trigger classloading */
+        /*BitList delegate = new BitList(1);
+
+        Runtime.getRuntime().gc();
+
+        long before = Runtime.getRuntime().freeMemory();
+        BitList delegate2 = new BitList(1);
+        long after = Runtime.getRuntime().freeMemory();
+
+        System.out.println("Memory used:"+(before-after));*/
+
+        for(int i = 2; i < 5; ++i)
         long startTime = System.currentTimeMillis();
-        FreePolyominoGenerator.generateFreePolyominoesRedelmeier(14);
+        FreePolyominoGenerator.generateFreePolyominoes(2);
         long endTime = System.currentTimeMillis();
         //System.out.println("Total execution time: " + (endTime-startTime) + "ms");
 
