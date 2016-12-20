@@ -4,56 +4,50 @@ import java.math.*;
 
 class FreePolyominoGenerator
 {
-    public static BitList codeReflecty(int n, BitList fix)
+    public static void codeReflecty(int n, short[] workarray, short[] fix)
     {
-        BitList res = new BitList(n);
         int m = -1;
 
         // calcul max x
         for(int p = 0; p < n; ++p)
         {
-            short k = fix.lst[p];
+            short k = fix[p];
             int i = k%n, j = k/n;
             m = Math.max(i, m);
         }
         for(int i = 0; i < n; ++i)
-            res.lst[i] = (short)((m-(fix.lst[i]%n) + n*(fix.lst[i]/n)));
-        return res;
+            workarray[i] = (short)((m-(fix[i]%n) + n*(fix[i]/n)));
     }
 
-    public static BitList codeReflectx(int n, BitList fix)
+    public static void codeReflectx(int n, short[] workarray, short[] fix)
     {
-        BitList res = new BitList(n);
         int m = -1;
 
         // calcul max y
         for(int p = 0; p < n; ++p)
         {
-            short k = fix.lst[p];
+            short k = fix[p];
             int i = k%n, j = k/n;
             m = Math.max(j, m);
         }
         for(int i = 0; i < n; ++i)
-            res.lst[i] = (short)((fix.lst[i]%n) + n*(m-(fix.lst[i]/n)));
-        return res;
+            workarray[i] = (short)((fix[i]%n) + n*(m-(fix[i]/n)));
     }
 
-    public static BitList codeRotate90(int n, BitList fix)
+    public static void codeRotate90(int n, short[] workarray, short[] fix)
     {
-        BitList res = new BitList(n);
         int m = -1;
 
         // calcul max x
         for(int p = 0; p < n; ++p)
         {
-            short k = fix.lst[p];
+            short k = fix[p];
             int i = k%n, j = k/n;
             m = Math.max(i, m);
         }
 
         for(int i = 0; i < n; ++i)
-            res.lst[i] = (short)((fix.lst[i]/n) + n*(m-(fix.lst[i]%n)));
-        return res;
+            workarray[i] = (short)((fix[i]/n) + n*(m-(fix[i]%n)));
     }
 
     /* Pour générer les free polyminoes :
@@ -71,7 +65,7 @@ class FreePolyominoGenerator
         {
             BigInteger pol = fixed.get(i);
 
-            ArrayList<BitList> similitudes = new ArrayList<BigInteger>();
+            ArrayList<short[]> similitudes = new ArrayList<BigInteger>();
             similitudes.add(codeReflecty(n, pol));
             similitudes.add(codeReflectx(n, pol));
             similitudes.add(codeRotate90(n, pol));
@@ -122,61 +116,87 @@ class FreePolyominoGenerator
     /*
      * Même fonction sur le principe, mais génère à partir de l'algorithme de Redelmeier.
      */
-    public static TreeSet<BitList> generateFreePolyominoes(int n)
+    public static TreeSet<short[]> generateFreePolyominoes(int n)
     {
-        ArrayList<BitList> fixed = FixedPolyominoGenerator.generateFixedPolyominoes(n);
-        TreeSet<BitList> ret = new TreeSet<BitList>();
-        TreeSet<BitList> bucket = new TreeSet<BitList>();
+        ArrayList<short[]> fixed = FixedPolyominoGenerator.generateFixedPolyominoes(n);
 
-        long startTime = System.currentTimeMillis();
-
-        BitList[] similitudes = new BitList[7];
-
-        for(int i = 0; i < fixed.size(); ++i)
+        Comparator<short[]> arrayComparator = new Comparator<short[]>()
         {
-            BitList pol = fixed.get(i);
-
-            normalize(pol.lst);
-            Arrays.sort(pol.lst);
-
-            if(bucket.contains(pol))
-                continue;
-
-            ret.add(pol);
-
-            BitList refy = codeReflecty(n, pol);
-            BitList refx = codeReflectx(n, pol);
-            BitList rot90 = codeRotate90(n, pol), rot902 = codeRotate90(n, rot90), rot903 = codeRotate90(n, rot902);
-            BitList rot90y = codeRotate90(n, refy), rot90x = codeRotate90(n, refx);
-
-            Arrays.sort(refy.lst);
-            Arrays.sort(refx.lst);
-            Arrays.sort(rot90.lst);
-            Arrays.sort(rot902.lst);
-            Arrays.sort(rot903.lst);
-            Arrays.sort(rot90x.lst);
-            Arrays.sort(rot90y.lst);
-
-            similitudes[0] = (refy);
-            similitudes[1] = (refx);
-            similitudes[2] = (rot90);
-            similitudes[3] = (rot902);
-            similitudes[4] = (rot903);
-            similitudes[5] = (rot90y);
-            similitudes[6] = (rot90x);
-
-            for(int j = 0; j < 7; ++j)
+            @Override
+            public int compare(short[] o1, short[] o2)
             {
-                if(!similitudes[j].equals(pol))
+                for(int i = 0; i < o1.length; ++i)
                 {
-                    bucket.add(similitudes[j]);
+                    if(o1[i] < o2[i])
+                        return -1;
+                    if(o1[i] > o2[i])
+                        return 1;
+                }
+                return 0;
+            }};
+
+        TreeSet<short[]> ret = new TreeSet<short[]>(arrayComparator);
+        TreeSet<short[]> bucket = new TreeSet<short[]>(arrayComparator);
+
+            long startTime = System.currentTimeMillis();
+
+            short[][] similitudes = new short[7][];
+
+            for(int i = 0; i < fixed.size(); ++i)
+            {
+                short[] pol = fixed.get(i);
+
+                normalize(pol);
+                Arrays.sort(pol);
+
+                if(bucket.contains(pol))
+                    continue;
+
+                ret.add(pol);
+
+                short[] refy = new short[n];
+                codeReflecty(n, refy, pol);
+                short[] refx = new short[n];
+                codeReflectx(n, refx, pol);
+                short[] rot90 = new short[n];
+                codeRotate90(n, rot90, pol);
+                short[] rot902 = new short[n];
+                codeRotate90(n, rot902, rot90);
+                short[] rot903 = new short[n];
+                codeRotate90(n, rot903, rot902);
+                short[] rot90y = new short[n];
+                codeRotate90(n, rot90y, refy);
+                short[] rot90x = new short[n];
+                codeRotate90(n, rot90x, refx);
+
+                Arrays.sort(refy);
+                Arrays.sort(refx);
+                Arrays.sort(rot90);
+                Arrays.sort(rot902);
+                Arrays.sort(rot903);
+                Arrays.sort(rot90x);
+                Arrays.sort(rot90y);
+
+                similitudes[0] = (refy);
+                similitudes[1] = (refx);
+                similitudes[2] = (rot90);
+                similitudes[3] = (rot902);
+                similitudes[4] = (rot903);
+                similitudes[5] = (rot90y);
+                similitudes[6] = (rot90x);
+
+                for(int j = 0; j < 7; ++j)
+                {
+                    if(!similitudes[j].equals(pol))
+                    {
+                        bucket.add(similitudes[j]);
+                    }
                 }
             }
-        }
 
-        System.out.println(ret.size());
-        long endTime = System.currentTimeMillis();
-        System.out.println("Free execution time: " + (endTime-startTime) + "ms");
-        return ret;
+            System.out.println(ret.size());
+            long endTime = System.currentTimeMillis();
+            System.out.println("Free execution time: " + (endTime-startTime) + "ms");
+            return ret;
+        }
     }
-}

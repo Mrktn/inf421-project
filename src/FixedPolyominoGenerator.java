@@ -27,18 +27,21 @@ class FixedPolyominoGenerator
     /*
      * Algorithme de Redelmeier (Counting Polyominoes: Yet Another Attack, D. H. Redelmeier, 1979)
      */
-    private static ArrayList<BitList> redelpol(int n, int k, short[] parent, int[][] untried, int startIndex, int endIndex, boolean[][] field)
+    private static ArrayList<short[]> redelpol(int n, int k, short[] parent, int[][] untried, int startIndex, int endIndex, boolean[][] field)
     {
         if(k == n)
         {
-            ArrayList<BitList> ret = new ArrayList<BitList>();
-            ret.add(new BitList(parent));
+            ArrayList<short[]> ret = new ArrayList<short[]>();
+            short[] neu = new short[n];
+
+            System.arraycopy(parent, 0, neu, 0, n);
+            ret.add(neu);
             return ret;
         }
 
         else
         {
-            ArrayList<BitList> l = new ArrayList<BitList>();
+            ArrayList<short[]> l = new ArrayList<short[]>();
 
             for(int i = startIndex; i <= endIndex; ++i)
             {
@@ -111,7 +114,7 @@ class FixedPolyominoGenerator
     }
 
 
-    public static ArrayList<BitList> generateFixedPolyominoes(int n)
+    public static ArrayList<short[]> generateFixedPolyominoes(int n)
     {
         long startTime = System.currentTimeMillis();
         short[] initialParent = new short[n];
@@ -135,7 +138,7 @@ class FixedPolyominoGenerator
         untried[0][1] = 0;
         field[n-1][1] = false;
 
-        ArrayList<BitList> ret = redelpol(n, 0, initialParent, untried, 0, 0, field);
+        ArrayList<short[]> ret = redelpol(n, 0, initialParent, untried, 0, 0, field);
         System.out.println(ret.size());
         long endTime = System.currentTimeMillis();
         System.out.println("Fixed execution time: " + (endTime-startTime) + "ms");
