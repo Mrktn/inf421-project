@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.stream.*;
 import java.math.*;
 
-class FreePolyominoGenerator
+class RedelmeierFreePolyominoGenerator
 {
     public static void codeReflecty(int n, short[] workarray, short[] fix)
     {
@@ -50,41 +50,6 @@ class FreePolyominoGenerator
             workarray[i] = (short)((fix[i]/n) + n*(m-(fix[i]%n)));
     }
 
-    /* Pour générer les free polyminoes :
-        - Commencer par récupérer les fixed
-        - Puis tant que c'est possible
-            - en récupérer un dans la liste des fixed, on le nomme pol plus loin
-            - calculer toutes ses similitudes (rot90, rot90², rot90³, symx, symy, rot90osymx, rot90osymy)
-            - on décide que le représentant est pol, et il ne reste qu'à virer les similitudes
-    */
-    /*public static ArrayList<BigInteger> generateFreePolyominoes(int n)
-    {
-        ArrayList<BigInteger> fixed = FixedPolyominoGenerator.generateFixedPolyominoes(n);
-
-        for(int i = 0; i < fixed.size(); ++i)
-        {
-            BigInteger pol = fixed.get(i);
-
-            ArrayList<short[]> similitudes = new ArrayList<BigInteger>();
-            similitudes.add(codeReflecty(n, pol));
-            similitudes.add(codeReflectx(n, pol));
-            similitudes.add(codeRotate90(n, pol));
-            similitudes.add(codeRotate90(n, codeRotate90(n, pol)));
-            similitudes.add(codeRotate90(n, codeRotate90(n, codeRotate90(n, pol))));
-            similitudes.add(codeRotate90(n, codeReflecty(n, pol)));
-            similitudes.add(codeRotate90(n, codeReflectx(n, pol)));
-
-            for(BigInteger b : similitudes)
-                if(b.compareTo(pol) != 0)
-                    fixed.remove(b);
-        }
-
-        System.out.println(fixed.size());
-        return fixed;
-    }*/
-
-
-
     /*
      * Normalize le polyomino en input en le translatant de sorte à ce qu'aucune abscisse / ordonnée ne soit négative
      */
@@ -119,7 +84,7 @@ class FreePolyominoGenerator
     public static ArrayList<short[]> generateFreePolyominoes(int n)
     {
         // On récupère les polyominos fixes
-        ArrayList<short[]> fixed = FixedPolyominoGenerator.generateFixedPolyominoes(n);
+        ArrayList<short[]> fixed = RedelmeierFixedPolyominoGenerator.generateFixedPolyominoes(n);
 
         // Un comparateur pour les arrays : c'est simplement un ordre lexicographique
         Comparator<short[]> arrayComparator = new Comparator<short[]>()
@@ -189,12 +154,8 @@ class FreePolyominoGenerator
             similitudes[6] = (rot90x);
 
             for(int j = 0; j < 7; ++j)
-            {
                 if(!Arrays.equals(similitudes[j], pol))
-                {
                     bucket.add(similitudes[j]);
-                }
-            }
         }
 
         System.out.println(ret.size());

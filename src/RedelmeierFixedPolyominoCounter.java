@@ -2,7 +2,7 @@ import java.util.*;
 import java.math.*;
 
 // L'algorithme de Redelmeier pour compter (et seulement compter) efficacement les polyominos fixes
-class FixedPolyominoCounter
+class RedelmeierFixedPolyominoCounter
 {
     /*
      * Algorithme de Redelmeier (Counting Polyominoes: Yet Another Attack, D. H. Redelmeier, 1979)

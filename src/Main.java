@@ -5,13 +5,14 @@ import javax.swing.JPanel;
 import java.util.*;
 import java.math.BigInteger;
 import java.io.*;
+
 public class Main
 {
 
     public static void main(String[] args)
     {
         long startTime = System.currentTimeMillis();
-        FreePolyominoGenerator.generateFreePolyominoes(15);
+        RedelmeierFreePolyominoGenerator.generateFreePolyominoes(15);
         long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime-startTime) + "ms");
 

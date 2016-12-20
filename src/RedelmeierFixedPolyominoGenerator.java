@@ -1,7 +1,7 @@
 import java.util.*;
 import java.math.*;
 
-class FixedPolyominoGenerator
+class RedelmeierFixedPolyominoGenerator
 {
 
 
