@@ -116,10 +116,12 @@ class FreePolyominoGenerator
     /*
      * Même fonction sur le principe, mais génère à partir de l'algorithme de Redelmeier.
      */
-    public static TreeSet<short[]> generateFreePolyominoes(int n)
+    public static ArrayList<short[]> generateFreePolyominoes(int n)
     {
+        // On récupère les polyominos fixes
         ArrayList<short[]> fixed = FixedPolyominoGenerator.generateFixedPolyominoes(n);
 
+        // Un comparateur pour les arrays : c'est simplement un ordre lexicographique
         Comparator<short[]> arrayComparator = new Comparator<short[]>()
         {
             @Override
@@ -133,70 +135,71 @@ class FreePolyominoGenerator
                         return 1;
                 }
                 return 0;
-            }};
+            }
+        };
 
-        TreeSet<short[]> ret = new TreeSet<short[]>(arrayComparator);
+        ArrayList<short[]> ret = new ArrayList<short[]>();
         TreeSet<short[]> bucket = new TreeSet<short[]>(arrayComparator);
 
-            long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
-            short[][] similitudes = new short[7][];
+        short[][] similitudes = new short[7][];
 
-            for(int i = 0; i < fixed.size(); ++i)
+        for(int i = 0; i < fixed.size(); ++i)
+        {
+            short[] pol = fixed.get(i);
+
+            normalize(pol);
+            Arrays.sort(pol);
+
+            if(bucket.contains(pol))
+                continue;
+
+            ret.add(pol);
+
+            short[] refy = new short[n];
+            codeReflecty(n, refy, pol);
+            short[] refx = new short[n];
+            codeReflectx(n, refx, pol);
+            short[] rot90 = new short[n];
+            codeRotate90(n, rot90, pol);
+            short[] rot902 = new short[n];
+            codeRotate90(n, rot902, rot90);
+            short[] rot903 = new short[n];
+            codeRotate90(n, rot903, rot902);
+            short[] rot90y = new short[n];
+            codeRotate90(n, rot90y, refy);
+            short[] rot90x = new short[n];
+            codeRotate90(n, rot90x, refx);
+
+            Arrays.sort(refy);
+            Arrays.sort(refx);
+            Arrays.sort(rot90);
+            Arrays.sort(rot902);
+            Arrays.sort(rot903);
+            Arrays.sort(rot90x);
+            Arrays.sort(rot90y);
+
+            similitudes[0] = (refy);
+            similitudes[1] = (refx);
+            similitudes[2] = (rot90);
+            similitudes[3] = (rot902);
+            similitudes[4] = (rot903);
+            similitudes[5] = (rot90y);
+            similitudes[6] = (rot90x);
+
+            for(int j = 0; j < 7; ++j)
             {
-                short[] pol = fixed.get(i);
-
-                normalize(pol);
-                Arrays.sort(pol);
-
-                if(bucket.contains(pol))
-                    continue;
-
-                ret.add(pol);
-
-                short[] refy = new short[n];
-                codeReflecty(n, refy, pol);
-                short[] refx = new short[n];
-                codeReflectx(n, refx, pol);
-                short[] rot90 = new short[n];
-                codeRotate90(n, rot90, pol);
-                short[] rot902 = new short[n];
-                codeRotate90(n, rot902, rot90);
-                short[] rot903 = new short[n];
-                codeRotate90(n, rot903, rot902);
-                short[] rot90y = new short[n];
-                codeRotate90(n, rot90y, refy);
-                short[] rot90x = new short[n];
-                codeRotate90(n, rot90x, refx);
-
-                Arrays.sort(refy);
-                Arrays.sort(refx);
-                Arrays.sort(rot90);
-                Arrays.sort(rot902);
-                Arrays.sort(rot903);
-                Arrays.sort(rot90x);
-                Arrays.sort(rot90y);
-
-                similitudes[0] = (refy);
-                similitudes[1] = (refx);
-                similitudes[2] = (rot90);
-                similitudes[3] = (rot902);
-                similitudes[4] = (rot903);
-                similitudes[5] = (rot90y);
-                similitudes[6] = (rot90x);
-
-                for(int j = 0; j < 7; ++j)
+                if(!Arrays.equals(similitudes[j], pol))
                 {
-                    if(!similitudes[j].equals(pol))
-                    {
-                        bucket.add(similitudes[j]);
-                    }
+                    bucket.add(similitudes[j]);
                 }
             }
-
-            System.out.println(ret.size());
-            long endTime = System.currentTimeMillis();
-            System.out.println("Free execution time: " + (endTime-startTime) + "ms");
-            return ret;
         }
+
+        System.out.println(ret.size());
+        long endTime = System.currentTimeMillis();
+        System.out.println("Free execution time: " + (endTime-startTime) + "ms");
+        return ret;
     }
+}
