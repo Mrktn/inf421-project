@@ -103,12 +103,22 @@ class RedelmeierFreePolyominoGenerator
             }
         };
 
+        short[] refy = new short[n];
+        short[] refx = new short[n];
+        short[] rot90 = new short[n];
+        short[] rot902 = new short[n];
+        short[] rot903 = new short[n];
+        short[] rot90y = new short[n];
+        short[] rot90x = new short[n];
+
+        short[][] similitudes = new short[][] {refy, refx, rot90, rot902, rot903, rot90y, rot90x};
+
         ArrayList<short[]> ret = new ArrayList<short[]>();
         TreeSet<short[]> bucket = new TreeSet<short[]>(arrayComparator);
 
         long startTime = System.currentTimeMillis();
 
-        short[][] similitudes = new short[7][];
+        
 
         for(int i = 0; i < fixed.size(); ++i)
         {
@@ -122,19 +132,12 @@ class RedelmeierFreePolyominoGenerator
 
             ret.add(pol);
 
-            short[] refy = new short[n];
             codeReflecty(n, refy, pol);
-            short[] refx = new short[n];
             codeReflectx(n, refx, pol);
-            short[] rot90 = new short[n];
             codeRotate90(n, rot90, pol);
-            short[] rot902 = new short[n];
             codeRotate90(n, rot902, rot90);
-            short[] rot903 = new short[n];
             codeRotate90(n, rot903, rot902);
-            short[] rot90y = new short[n];
             codeRotate90(n, rot90y, refy);
-            short[] rot90x = new short[n];
             codeRotate90(n, rot90x, refx);
 
             Arrays.sort(refy);
@@ -145,17 +148,9 @@ class RedelmeierFreePolyominoGenerator
             Arrays.sort(rot90x);
             Arrays.sort(rot90y);
 
-            similitudes[0] = (refy);
-            similitudes[1] = (refx);
-            similitudes[2] = (rot90);
-            similitudes[3] = (rot902);
-            similitudes[4] = (rot903);
-            similitudes[5] = (rot90y);
-            similitudes[6] = (rot90x);
-
             for(int j = 0; j < 7; ++j)
                 if(!Arrays.equals(similitudes[j], pol))
-                    bucket.add(similitudes[j]);
+                    bucket.add(Arrays.copyOf(similitudes[j], n));
         }
 
         System.out.println(ret.size());
