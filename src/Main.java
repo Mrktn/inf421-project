@@ -12,7 +12,19 @@ public class Main
     public static void main(String[] args)
     {
         long startTime = System.currentTimeMillis();
-        RedelmeierFreePolyominoGenerator.generateFreePolyominoes(15);
+        
+        ArrayList<ArrayList<Pair>> fixed = RedelmeierFixedPolyominoGenerator.generateFixedPolyominoesAsCoord(3);
+
+        /*for(ArrayList<Pair> l : fixed)
+        {
+            for(Pair p : l)
+                System.out.print("(" + p.x + "," + p.y + ") ;");
+            System.out.println("");
+        }*/
+        
+
+
+
         long endTime = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTime-startTime) + "ms");
 

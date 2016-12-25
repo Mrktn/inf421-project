@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.*;
 import java.math.*;
+import java.util.stream.Collectors;
 
 class RedelmeierFreePolyominoGenerator
 {
@@ -154,8 +155,25 @@ class RedelmeierFreePolyominoGenerator
         }
 
         System.out.println(ret.size());
+
+        
         long endTime = System.currentTimeMillis();
         System.out.println("Free execution time: " + (endTime-startTime) + "ms");
+        return ret;
+    }
+
+    public static ArrayList<ArrayList<Pair>> generateFreePolyominoesAsCoord(int n)
+    {
+        return generateFreePolyominoes(n).stream().map((short[] l) -> codage2ListOfPairs(n, l)).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public static ArrayList<Pair> codage2ListOfPairs(int n, final short[] cod)
+    {
+        ArrayList<Pair> ret = new ArrayList<Pair>(n);
+
+        for(int i = 0; i < n; ++i)
+            ret.add(new Pair(cod[i]%n, cod[i]/n));
+
         return ret;
     }
 }

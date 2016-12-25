@@ -1,10 +1,9 @@
 import java.util.*;
 import java.math.*;
+import java.util.stream.Collectors;
 
 class RedelmeierFixedPolyominoGenerator
 {
-
-
     private static class LinkedPoint
     {
         public Pair loc;
@@ -22,7 +21,6 @@ class RedelmeierFixedPolyominoGenerator
     {
         return x < 0 ? (-1) : 1;
     }
-
 
     /*
      * Algorithme de Redelmeier (Counting Polyominoes: Yet Another Attack, D. H. Redelmeier, 1979)
@@ -144,6 +142,20 @@ class RedelmeierFixedPolyominoGenerator
         System.out.println("Fixed execution time: " + (endTime-startTime) + "ms");
 
         return ret;
+    }
+
+    public static short[] normalize(int n, short[] l)
+    {
+        short[] ret = Arrays.copyOf(l, n);
+
+        RedelmeierFreePolyominoGenerator.normalize(ret);
+
+        return ret;
+    }
+
+    public static ArrayList<ArrayList<Pair>> generateFixedPolyominoesAsCoord(int n)
+    {
+        return generateFixedPolyominoes(n).stream().map((short[] l) -> RedelmeierFreePolyominoGenerator.codage2ListOfPairs(n, normalize(n, l))).collect(Collectors.toCollection(ArrayList::new));
     }
 
 
