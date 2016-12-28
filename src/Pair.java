@@ -30,6 +30,12 @@ public class Pair implements Comparable<Pair>
     	Pair that = (Pair) other;
     	return that.x == this.x && that.y == this.y;
     }
+
+    @Override
+    public int hashCode()
+    {
+        return 27*x + y;
+    }
     
     public Pair translate(int x, int y){
     	return new Pair(this.x + x, this.y + y);

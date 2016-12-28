@@ -14,7 +14,7 @@ public class NaiveFixedPolyominoGenerator
              - Que les polyominos découverts jusqu'alors sont stockés dans discovered
              - Que le polyomino qu'on a déjà construit (accumulé) a pour valeur val dans mon codage (noraj du codage)
         */
-    private static void genpolfixed(int n, int k, int miny, TreeSet<Pair> vois, boolean[][] checked, TreeSet<BigInteger> discovered, BigInteger val, AdjacencyList[][] adjacency)
+    private static void genpolfixed(int n, int k, int miny, HashSet<Pair> vois, boolean[][] checked, HashSet<BigInteger> discovered, BigInteger val, AdjacencyList[][] adjacency)
     {
         /* S'il ne reste aucun bloc à placer, on va regarder si miny > 0. Si c'est le cas, c'est qu'on
            peut translater le polyomino vers le haut, ce qu'on fait puisque on cherche les polyominos à translation près.
@@ -34,7 +34,7 @@ public class NaiveFixedPolyominoGenerator
         else
         {
             // copyvois est notre copie de vois sur laquelle on travaille
-            TreeSet<Pair> copyvois = new TreeSet<Pair>(vois);
+            HashSet<Pair> copyvois = new HashSet<Pair>(vois);
 
             // Pour chaque voisin du polyomino déjà construit, on va essayer de l'ajouter à notre construction
             for(Pair p : vois)
@@ -69,7 +69,7 @@ public class NaiveFixedPolyominoGenerator
     public static ArrayList<BigInteger> generateFixedPolyominoes(int n)
     {
         long startTime = System.currentTimeMillis();
-        TreeSet<BigInteger> res = new TreeSet<BigInteger>();
+        HashSet<BigInteger> res = new HashSet<BigInteger>();
         AdjacencyList[][] adjacency = new AdjacencyList[n][n];
 
         // Initialise adjacency. adjacency[i][j] est la liste des voisins de i,j dans le maillage carré
@@ -94,7 +94,7 @@ public class NaiveFixedPolyominoGenerator
         // On lance la recherche depuis le bord gauche des x = 0
         for(int i = 0; i < n; ++i)
         {
-            TreeSet<Pair> vois = new TreeSet<Pair>();
+            HashSet<Pair> vois = new HashSet<Pair>();
             boolean[][] checked = new boolean[n][n];
             for(Pair p : adjacency[0][i].adj)
                 vois.add(p);
