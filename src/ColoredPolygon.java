@@ -1,3 +1,4 @@
+import java.util.List;
 import java.awt.*;
 import java.util.*;
 import java.io.*;
@@ -8,9 +9,13 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.math.BigInteger;
 
-public class ColoredPolygon
+public class ColoredPolygon implements List<Pair> 
 {
-    // Un polygone coloré c'est des coords de carrés de taille 1x1 et une couleur (définie dans awt)
+    //Ajout par rapport à ta version : les methodes permettant d'en faire une extensioo de List<Pair> 
+	//(permet de faire l'algo directement avec des ColoredPolygon)
+	
+	
+	// Un polygone coloré c'est des coords de carrés de taille 1x1 et une couleur (définie dans awt)
     public int[] xcoords;
     public int[] ycoords;
     public Color color;
@@ -22,6 +27,36 @@ public class ColoredPolygon
         ycoords = yc;
         color = c;
         polygon = new Polygon(xcoords, ycoords, xcoords.length);
+    }
+    
+    public ColoredPolygon(ArrayList<Pair> points, Color c)
+    {
+        xcoords = new int[points.size()];
+        ycoords = new int[points.size()];
+    	
+    	int i = 0;
+        for(Pair p : points){
+        	xcoords[i] = p.x;
+        	ycoords[i] = p.y;
+        	i++;
+        }
+        
+        color = c;
+        polygon = new Polygon(xcoords, ycoords, xcoords.length);
+    }
+    
+    @Override
+    public Iterator<Pair> iterator(){
+    	
+    	ArrayList<Pair> rtn = new ArrayList<Pair>();
+    	
+    	for(int i = 0; i< xcoords.length; i++){
+    		rtn.add(new Pair(xcoords[i], ycoords[i]));
+    	}
+    	
+    	Collections.sort(rtn);
+    	
+    	return rtn.iterator();
     }
 
     // Todo: on peut aussi calculer le x max et le y max, ça suffit sachant que l'origine est à 0.
@@ -185,4 +220,210 @@ public class ColoredPolygon
 
         this.translate(-m, 0);
     }
+
+
+
+	@Override
+	public int size() {
+		return this.xcoords.length;
+	}
+
+
+
+	@Override
+	public boolean isEmpty() {
+		if(this.size() == 0)
+			return true;
+		return false;
+	}
+
+
+
+	@Override
+	public boolean contains(Object o) {
+		Pair p = (Pair) o;
+		for(int i = 0; i < this.size(); i++){
+			if(xcoords[i] == p.x && ycoords[i] == p.y)
+				return true;
+		}
+		return false;
+	}
+
+
+
+	@Override
+	public Object[] toArray() {
+		
+		Pair[] rtn = new Pair[this.size()];
+		
+		for(int i = 0; i < this.size(); i++){
+			rtn[i] = new Pair(this.xcoords[i], this.ycoords[i]);
+		}
+		
+		return rtn;
+	}
+
+
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public boolean add(Pair e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean remove(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean addAll(Collection<? extends Pair> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean addAll(int index, Collection<? extends Pair> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public Pair get(int index) {
+		
+		return new Pair(this.xcoords[index],this.ycoords[index]);
+	}
+
+
+
+	@Override
+	public Pair set(int index, Pair element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void add(int index, Pair element) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public Pair remove(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public int indexOf(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int lastIndexOf(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public ListIterator<Pair> listIterator() {
+		
+		ArrayList<Pair> rtn = new ArrayList<Pair>();
+		
+		for(int i = 0; i < this.size(); i++){
+			rtn.add(this.get(i));
+		}
+		
+		return rtn.listIterator();
+	}
+
+
+
+	@Override
+	public ListIterator<Pair> listIterator(int index) {
+ArrayList<Pair> rtn = new ArrayList<Pair>();
+		
+		for(int i = 0; i < this.size(); i++){
+			rtn.add(this.get(i));
+		}
+		
+		return rtn.listIterator(index);
+	}
+
+
+
+	@Override
+	public List<Pair> subList(int fromIndex, int toIndex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public boolean equals(Object objThat){
+		
+		ColoredPolygon that = (ColoredPolygon) objThat;
+		if(this.xcoords.equals(that.xcoords) && this.ycoords.equals(that.ycoords))
+			return true;
+		return false;
+	}
 }

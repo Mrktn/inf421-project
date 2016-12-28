@@ -29,7 +29,7 @@ public class Main
         System.out.println("Total execution time: " + (endTime-startTime) + "ms");
 
 
-        /*ArrayList <ColoredPolygon> cpl = ColoredPolygon.loadFromFile("polyominoesINF421.txt");
+        ArrayList <ColoredPolygon> cpl = ColoredPolygon.loadFromFile("polyominoesINF421.txt");
 
         Image2d im = new Image2d(800, 600);
 
@@ -46,6 +46,6 @@ public class Main
         Image2dViewer frame = new Image2dViewer(im);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);*/
+        frame.setVisible(true);
     }
 }

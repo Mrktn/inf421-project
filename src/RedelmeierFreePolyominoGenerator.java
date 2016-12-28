@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 
 class RedelmeierFreePolyominoGenerator
 {
-    public static void codeReflecty(int n, short[] workarray, short[] fix)
+	//ajout d'une methode qui traduit le codage en un ColoredPolygon
+	
+	public static void codeReflecty(int n, short[] workarray, short[] fix)
     {
         int m = -1;
 
@@ -166,6 +168,11 @@ class RedelmeierFreePolyominoGenerator
     {
         return generateFreePolyominoes(n).stream().map((short[] l) -> codage2ListOfPairs(n, l)).collect(Collectors.toCollection(ArrayList::new));
     }
+    
+    public static ArrayList<ColoredPolygon> generateFreePolyominoesAsColoredPolygon(int n){
+    	
+    	return generateFreePolyominoes(n).stream().map((short[] l) -> codage2ColoredPolygon(n, l)).collect(Collectors.toCollection(ArrayList::new));
+    }
 
     public static ArrayList<Pair> codage2ListOfPairs(int n, final short[] cod)
     {
@@ -175,5 +182,18 @@ class RedelmeierFreePolyominoGenerator
             ret.add(new Pair(cod[i]%n, cod[i]/n));
 
         return ret;
+    }
+    
+    public static ColoredPolygon codage2ColoredPolygon(int n, final short[] cod)
+    {
+        int[] xc = new int[n];
+        int[] yc = new int[n];
+
+        for(int i = 0; i < n; ++i){
+        	xc[i] = cod[i]%n;
+        	yc[i] = cod[i]/n;
+        }
+
+        return new ColoredPolygon(xc,yc,ColoredPolygon.rndCol());
     }
 }

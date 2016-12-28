@@ -4,7 +4,9 @@ import java.util.stream.Collectors;
 
 class RedelmeierFixedPolyominoGenerator
 {
-    private static class LinkedPoint
+    //ajout d'une methode qui traduit le codage en un ColoredPolygon
+	
+	private static class LinkedPoint
     {
         public Pair loc;
         public LinkedPoint next;
@@ -152,10 +154,15 @@ class RedelmeierFixedPolyominoGenerator
 
         return ret;
     }
-
+    
+    public static ArrayList<ColoredPolygon> generateFixedPolyominoesAsColoredPolygon(int n){
+    	
+    	return generateFixedPolyominoes(n).stream().map((short[] l) -> RedelmeierFreePolyominoGenerator.codage2ColoredPolygon(n, l)).collect(Collectors.toCollection(ArrayList::new));
+    }
+    
     public static ArrayList<ArrayList<Pair>> generateFixedPolyominoesAsCoord(int n)
     {
-        return generateFixedPolyominoes(n).stream().map((short[] l) -> RedelmeierFreePolyominoGenerator.codage2ListOfPairs(n, normalize(n, l))).collect(Collectors.toCollection(ArrayList::new));
+    	return generateFixedPolyominoes(n).stream().map((short[] l) -> RedelmeierFreePolyominoGenerator.codage2ListOfPairs(n, normalize(n, l))).collect(Collectors.toCollection(ArrayList::new));
     }
 
 
