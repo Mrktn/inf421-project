@@ -41,8 +41,6 @@ public class Main
         	im.addColoredPolygon(cp);
         }
 
-
-
         Image2dViewer frame = new Image2dViewer(im);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);

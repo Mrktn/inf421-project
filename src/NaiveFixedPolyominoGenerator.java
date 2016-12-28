@@ -12,7 +12,7 @@ public class NaiveFixedPolyominoGenerator
                on ajoute toujours des blocs voisins à ceux-là)
              - Qu'on peut savoir en O(1) si le bloc (i,j) est déjà placé juste en regardant checked[i][j]
              - Que les polyominos découverts jusqu'alors sont stockés dans discovered
-             - Que le polyomino qu'on a déjà construit (accumulé) a pour valeur val dans mon codage (noraj du codage)
+             - Que le polyomino qu'on a déjà construit (accumulé) a pour valeur val dans mon codage
         */
     private static void genpolfixed(int n, int k, int miny, HashSet<Pair> vois, boolean[][] checked, HashSet<BigInteger> discovered, BigInteger val, AdjacencyList[][] adjacency)
     {
