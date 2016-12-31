@@ -121,7 +121,7 @@ public class test {
 		exactCover<ArrayList<Pair>, Pair> alg = new exactCover<ArrayList<Pair>, Pair>(X,C,Eq, (Class<ArrayList<Pair>>) C.getClass());
 		alg.runAlgDL();
 
-		/*for(ArrayList<ArrayList<Pair>> i : alg.P){
+		for(ArrayList<ArrayList<Pair>> i : alg.P){
 			String prt = "";
 			for(ArrayList<Pair> j : i){
 				prt += "{";
@@ -133,21 +133,13 @@ public class test {
 				prt += "}";
 			}
 			System.out.println(prt);
-		}*/
+		}
 		
 		//System.out.println(C2.size());
 		
-		/*Image2d im = new Image2d(800, 600);
 		
-		for(ArrayList<Pair> j : C2){
-			im.addColoredPolygon(new ColoredPolygon(j,ColoredPolygon.rndCol()));
-		}
-		Image2dViewer frame = new Image2dViewer(im);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);*/
 		
-		/*for(ArrayList<ArrayList<Pair>> i : alg.P){
+		for(ArrayList<ArrayList<Pair>> i : alg.P){
 			//System.out.println(i);
 			
 			Image2d im = new Image2d(800, 600);
@@ -161,7 +153,7 @@ public class test {
 	        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	        frame.setVisible(true);
 			
-		}*/
+		}
 		
 		/* teste si il y a des erreurs de classes d'equivalence */
 		
