@@ -99,7 +99,7 @@ public class NaiveFreePolyominoGenerator
                     fixed.remove(b);
         }
 
-        System.out.println(fixed.size());
+        System.out.println("There are " + fixed.size() + " free polyominoes of area " + n);
         long endTime = System.currentTimeMillis();
         System.out.println("NaiveFree execution time: " + (endTime-startTime) + "ms");
         return fixed;

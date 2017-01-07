@@ -156,7 +156,7 @@ class RedelmeierFreePolyominoGenerator
                     bucket.add(Arrays.copyOf(similitudes[j], n));
         }
 
-        System.out.println(ret.size());
+        System.out.println("There are " + ret.size() + " free polyominoes of area " + n);
 
         
         long endTime = System.currentTimeMillis();
@@ -167,6 +167,10 @@ class RedelmeierFreePolyominoGenerator
     public static ArrayList<ArrayList<Pair>> generateFreePolyominoesAsCoord(int n)
     {
         return generateFreePolyominoes(n).stream().map((short[] l) -> codage2ListOfPairs(n, l)).collect(Collectors.toCollection(ArrayList::new));
+    }
+    
+    public static short[] classeEquivalence(final short[] pol){
+    	
     }
     
     public static ArrayList<ColoredPolygon> generateFreePolyominoesAsColoredPolygon(int n){

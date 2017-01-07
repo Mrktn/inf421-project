@@ -92,7 +92,7 @@ class Image2dComponent extends JComponent
         g2.setBackground(Color.white);
         g2.clearRect(0,0,d.width,d.height);
 
-        int xoffset = 5;
+        int xoffset = 1;
 
         // draw the polygons
         synchronized (img.getColoredPolygons())
@@ -111,7 +111,7 @@ class Image2dComponent extends JComponent
                     g2.fillRect((xoffset+coloredPolygon.xcoords[i])*40,(coloredPolygon.ycoords[i]+2)*40,40,40);
                 }
 
-                xoffset +=0;
+                xoffset +=5;
             }
         }
 

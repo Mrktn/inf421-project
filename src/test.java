@@ -33,17 +33,17 @@ public class test {
 		 * Pour un calcul avec repetition des polyominos, il convient d'envoyer null à la place de Eq. Les valeurs de sortie :
 		 * 				P : ArrayList<ArrayList<F>> Correspond à l'ensemble des partitions solution du problème*/
 		
-		/* Exemple 1 : Remplir le rectangle 6*5 par des polyominos "fixed" de taille 5 */
+		//Exemple 1 : Remplir le rectangle 6*5 par des polyominos "fixed" de taille 5 */
 		
 		ArrayList<Pair> X = new ArrayList<Pair>();	
 		
-		for(int i = 0; i < 6; i++){
-			for(int j = 0; j < 5; j++){
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j < 3; j++){
 				X.add(new Pair(i,j));
 			}
 		}
 				
-		ArrayList<ArrayList<Pair>> C = RedelmeierFixedPolyominoGenerator.generateFixedPolyominoesAsCoord(5);
+		ArrayList<ArrayList<Pair>> C = RedelmeierFixedPolyominoGenerator.generateFixedPolyominoesAsCoord(3);
 		
 		HashMap<ArrayList<Pair>, ArrayList<ArrayList<Pair>>> Eq = new HashMap<ArrayList<Pair>, ArrayList<ArrayList<Pair>>>();
 				
@@ -57,8 +57,8 @@ public class test {
 			
 			Eq.put(T, new ArrayList<ArrayList<Pair>>());
 			
-			for(int i = 0; i < 6; i++){
-				for(int j = 0; j < 5; j++){
+			for(int i = 0; i < 4; i++){
+				for(int j = 0; j < 3; j++){
 					
 					if(i == 0 && j == 0)
 						continue;
@@ -121,7 +121,7 @@ public class test {
 		exactCover<ArrayList<Pair>, Pair> alg = new exactCover<ArrayList<Pair>, Pair>(X,C,Eq, (Class<ArrayList<Pair>>) C.getClass());
 		alg.runAlgDL();
 
-		for(ArrayList<ArrayList<Pair>> i : alg.P){
+		/*for(ArrayList<ArrayList<Pair>> i : alg.P){
 			String prt = "";
 			for(ArrayList<Pair> j : i){
 				prt += "{";
@@ -133,11 +133,19 @@ public class test {
 				prt += "}";
 			}
 			System.out.println(prt);
-		}
+		}*/
 		
 		//System.out.println(C2.size());
 		
+		/*Image2d im = new Image2d(800, 600);
 		
+		for(ArrayList<Pair> j : C2){
+			im.addColoredPolygon(new ColoredPolygon(j,ColoredPolygon.rndCol()));
+		}
+		Image2dViewer frame = new Image2dViewer(im);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);*/
 		
 		for(ArrayList<ArrayList<Pair>> i : alg.P){
 			//System.out.println(i);

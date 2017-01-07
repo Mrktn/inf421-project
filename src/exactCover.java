@@ -23,7 +23,7 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 		this.P = new ArrayList<ArrayList<F>>();
 	}
 	
-	exactCover (F X, ArrayList<F> C, HashMap<F,ArrayList<F>> Eq, boolean copy, Class<F> type){ //permet de recopier les ensembles. Nécessaire pour la récurrence de l'algorithme naif
+	exactCover (F X, ArrayList<F> C, HashMap<F,ArrayList<F>> Eq, boolean copy, Class<F> type) throws InstantiationException, IllegalAccessException{ //permet de recopier les ensembles. Nécessaire pour la récurrence de l'algorithme naif
 		
 		try {
 			this.X = type.newInstance();
@@ -41,12 +41,7 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 		
 		F buffer = null;
 		for(List<E> i : C){
-			try {
-				buffer = type.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			buffer = type.newInstance();
 			for(E j : i){
 				buffer.add(j);
 			}
@@ -57,7 +52,7 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 		
 	}
 	
-	public void runAlgNaive(){
+	public void runAlgNaive() throws InstantiationException, IllegalAccessException{
 		if(X.isEmpty()){
 			P.add(new ArrayList<F>());
 			return;

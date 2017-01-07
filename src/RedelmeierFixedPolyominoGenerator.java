@@ -139,7 +139,7 @@ class RedelmeierFixedPolyominoGenerator
         field[n-1][1] = false;
 
         ArrayList<short[]> ret = redelpol(n, 0, initialParent, untried, 0, 0, field);
-        System.out.println(ret.size());
+        System.out.println("There are " + ret.size() + " fixed polyominoes of area " + n);
         long endTime = System.currentTimeMillis();
         System.out.println("Fixed execution time: " + (endTime-startTime) + "ms");
 

@@ -103,7 +103,7 @@ public class NaiveFixedPolyominoGenerator
             genpolfixed(n, n-1, i, vois, checked, res, BigInteger.ZERO.setBit(i), adjacency);
         }
 
-        System.out.println(res.size());
+        System.out.println("There are " + res.size() + " fixed polyominoes of area " + n);
         long endTime = System.currentTimeMillis();
         System.out.println("NaiveFixed execution time: " + (endTime-startTime) + "ms");
 

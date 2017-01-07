@@ -101,7 +101,7 @@ class RedelmeierFixedPolyominoCounter
         field[n-1][1] = false;
 
         long ret = redelpol(n, 0, untried, 0, 0, field);
-        System.out.println(ret);
+        System.out.println("There are " + ret + " fixed polyominoes of area " + n);
         long endTime = System.currentTimeMillis();
         System.out.println("Fixed counter execution time: " + (endTime-startTime) + "ms");
 
