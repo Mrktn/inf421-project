@@ -169,8 +169,30 @@ class RedelmeierFreePolyominoGenerator
         return generateFreePolyominoes(n).stream().map((short[] l) -> codage2ListOfPairs(n, l)).collect(Collectors.toCollection(ArrayList::new));
     }
     
-    public static short[] classeEquivalence(final short[] pol){
-    	
+    public static ArrayList<short[]> classeEquivalence(final short[] pol)
+    {
+	int n = pol.length;
+    	ArrayList<short[]> ret = new ArryList<short[]>(7);
+	short[] workarray = new short[n];
+	short[] refy = new short[n];
+        short[] refx = new short[n];
+        short[] rot90 = new short[n];
+        short[] rot902 = new short[n];
+        short[] rot903 = new short[n];
+        short[] rot90y = new short[n];
+        short[] rot90x = new short[n];
+	    short[][] similitudes = new short[][] {refy, refx, rot90, rot902, rot903, rot90y, rot90x};
+	codeReflecty(n, refy, pol);
+            codeReflectx(n, refx, pol);
+            codeRotate90(n, rot90, pol);
+            codeRotate90(n, rot902, rot90);
+            codeRotate90(n, rot903, rot902);
+            codeRotate90(n, rot90y, refy);
+            codeRotate90(n, rot90x, refx);
+	
+	    for(int i = 0; i < 7; ++i)
+		    ret.add(similitudes[i]);
+	    return ret;
     }
     
     public static ArrayList<ColoredPolygon> generateFreePolyominoesAsColoredPolygon(int n){
