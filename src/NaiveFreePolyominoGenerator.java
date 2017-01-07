@@ -78,10 +78,12 @@ public class NaiveFreePolyominoGenerator
 
         long startTime = System.currentTimeMillis();
 
+        // On parcoure les polyominos fixes
         for(int i = 0; i < fixed.size(); ++i)
         {
             BigInteger pol = fixed.get(i);
 
+            // On stocke dans similitudes toutes les similitudes directes de celui qui est considéré (leur codage)
             ArrayList<BigInteger> similitudes = new ArrayList<BigInteger>();
             similitudes.add(codeReflecty(n, pol));
             similitudes.add(codeReflectx(n, pol));
@@ -91,6 +93,7 @@ public class NaiveFreePolyominoGenerator
             similitudes.add(codeRotate90(n, codeReflecty(n, pol)));
             similitudes.add(codeRotate90(n, codeReflectx(n, pol)));
 
+            // Et on supprime du tableau sur lequel on itère chacune de ces similitudes qui n'est pas égale au polyomino actuellement considéré
             for(BigInteger b : similitudes)
                 if(b.compareTo(pol) != 0)
                     fixed.remove(b);
