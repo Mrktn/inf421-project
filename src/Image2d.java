@@ -111,7 +111,7 @@ class Image2dComponent extends JComponent
                     g2.fillRect((xoffset+coloredPolygon.xcoords[i])*40,(coloredPolygon.ycoords[i]+2)*40,40,40);
                 }
 
-                xoffset +=5;
+                xoffset += 0;
             }
         }
 

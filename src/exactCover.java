@@ -113,6 +113,7 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 	@SuppressWarnings("unchecked") //évite les avertissements sur le typecasting
 	public void runAlgDL(){
 		
+		//System.out.println(H);
 		
 		if(H.R == H){ 								//Si la structure est vide
 			this.P.add(new ArrayList<F>()); 	//ajout de l'ensemble vide
@@ -143,6 +144,8 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 		
 		x.coverColumn();
 		
+		//System.out.println("After covering first column : " + H);
+		
 		/*boucle sur les ensembles contenant x, pour traiter les cas de manière dynamique*/
 		
 		buffer = x; 
@@ -153,13 +156,21 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 			
 			buffer = buffer.D;
 			
+			//eCast = (lineNode<F,E>) buffer.Ln;
+			
+			//System.out.println("Chose set : " + eCast.set);
+			
 			/*je n'ai pas mi de size sur les elements simples, meme si ça aurait permi de circuler plus simplement sur un set, 
 			 * car cela prendrait n*2**n mémoire supplémentaire. Le procédé est le suivant : on prend chaque element de l'ensemble
 			 * selecitionné, et on retire sa colone des possibles pour qu'il ne reste plus que les polyominos qui ne sont pas en
 			 * intersection avec lui. On va ensuite retirer les elements de sa classe d'équivalence, puis on récurse*/
 
 			eCast = (lineNode<F,E>) buffer.Ln;
+			
+			//System.out.println(eCast);
 			eCast.coverEq();
+			
+			//System.out.println("Covered Eq");
 			
 			buffer2 = buffer.Ln; 
 			
@@ -176,8 +187,12 @@ public class exactCover<F extends List<E>, E extends Comparable<E>> {
 				
 			}
 			
+			//System.out.println("Covered Column");
+			
 			exactCover<F,E> nextStep = new exactCover<F,E>(H);
 			nextStep.runAlgDL();
+			
+			//System.out.println("Back");
 			
 			for(ArrayList<F> p : nextStep.P){
 				eCast = (lineNode<F,E>) buffer.Ln;

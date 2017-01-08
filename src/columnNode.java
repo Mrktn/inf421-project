@@ -91,8 +91,6 @@ public class columnNode<F extends List<E>, E extends Comparable<E>> extends dtNo
 			
 			buffer = buffer.D;
 			
-			tCast = (lineNode<F,E>) buffer.Ln;
-			
 			buffer2 = buffer.Ln;
 			
 			for(int j = 0; j < buffer.Ln.size; j++){
@@ -109,13 +107,15 @@ public class columnNode<F extends List<E>, E extends Comparable<E>> extends dtNo
 			
 			
 			tCast = (lineNode<F,E>) buffer.Ln;
+			
+			/*
 			tCast.U.D = tCast.D;
 			tCast.D.U = tCast.U;
 			
 			tCast.nextEq.prevEq = tCast.prevEq;
 			tCast.prevEq.nextEq = tCast.nextEq;
 			if(tCast.nextEq != tCast)
-				tCast.eQsize.add(-1);
+				tCast.eQsize.add(-1);*/
 			
 			tCast.coveredByColumnCover = true;
 			
@@ -164,13 +164,15 @@ public class columnNode<F extends List<E>, E extends Comparable<E>> extends dtNo
 			lineNode<F,E> tCast; 
 			
 			tCast = (lineNode<F,E>) buffer.Ln;
+			
+			/*
 			tCast.U.D = tCast;
 			tCast.D.U = tCast;
 			
 			tCast.nextEq.prevEq = tCast;
 			tCast.prevEq.nextEq = tCast;
 			if(tCast.nextEq != tCast)
-				tCast.eQsize.add(1);
+				tCast.eQsize.add(1);*/
 			
 			tCast.coveredByColumnCover = false;
 			
@@ -178,9 +180,9 @@ public class columnNode<F extends List<E>, E extends Comparable<E>> extends dtNo
 		
 	}
 	
-	public String toString(){
+	/*public String toString(){
 		
 		return "Item : " + this.item.toString() + " Size : " + this.size;
 		
-	}
+	}*/
 }

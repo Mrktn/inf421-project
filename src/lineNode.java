@@ -31,8 +31,6 @@ public class lineNode<F extends List<E>, E extends Comparable<E>> extends dtNode
 		
 		coveredByColumnCover = false;
 
-		source.addDNode(this);
-
 	}
 	
 	lineNode(F set, dancingLinks<F,E> source, lineNode<F,E> eqClass) {
@@ -52,8 +50,6 @@ public class lineNode<F extends List<E>, E extends Comparable<E>> extends dtNode
 		
 		eqClass.nextEq.prevEq = this;
 		eqClass.nextEq = this;
-
-		source.addDNode(this);
 
 	}
 
@@ -92,9 +88,6 @@ public class lineNode<F extends List<E>, E extends Comparable<E>> extends dtNode
 			buffer.D.U = buffer.U;
 			buffer.C.size--;
 		}
-		
-		this.U.D = this.D;
-		this.D.U = this.U;
 
 	}
 
@@ -109,9 +102,6 @@ public class lineNode<F extends List<E>, E extends Comparable<E>> extends dtNode
 				buffer.D.U = buffer;
 				buffer.C.size++;
 		}
-		
-		this.U.D = this;
-		this.D.U = this;
 
 	}
 
@@ -143,62 +133,75 @@ public class lineNode<F extends List<E>, E extends Comparable<E>> extends dtNode
 	 * ou vers le haut (nextEq ou prevEq)
 	 */
 
-	public lineNode<F,E> findVisibleEq(boolean dir){
+	/*public lineNode<F,E> findVisibleEq(boolean dir){
+		
+		int i = 0;
 		
 		if(dir){
 			lineNode<F,E> buffer = this.nextEq;
 			
-			while(buffer != this){
+			while(i < this.eQsize.s){
 				if(!buffer.coveredByColumnCover)
 					return buffer;
 				buffer = buffer.nextEq;
+				i++;
 			}
 			return null;
 		}
 		else{
 			lineNode<F,E> buffer = this.prevEq;
 			
-			while(buffer != this){
+			while(i < this.eQsize.s){
 				if(!buffer.coveredByColumnCover)
 					return buffer;
 				buffer = buffer.prevEq;
+				i++;
 			}
 			return null;
 		}
 		
-	}
+	}*/
 	public void coverEq() {
 
-		lineNode<F,E> buffer = this.findVisibleEq(true);
-		
-		if(buffer == null){
-			return;
-		}
+		lineNode<F,E> buffer = this;
 		
 		for (int i = 0; i < buffer.eQsize.s; i++) {
-			buffer.coverLine();
+			if(!buffer.coveredByColumnCover)
+				buffer.coverLine();
 			buffer = buffer.nextEq;
 		}
 	}
 
 	public void uncoverEq(){
 		
-		lineNode<F,E> buffer = this.findVisibleEq(false);
-		
-		if(buffer == null){
-			return;
-		}
+		lineNode<F,E> buffer = this;
 		
 		for (int i = 0; i < buffer.eQsize.s; i++) {
-			buffer.uncoverLine();
+			if(!buffer.coveredByColumnCover)
+				buffer.uncoverLine();
 			buffer = buffer.prevEq;
 		}
 		
 	}
 	
-	public String toString(){
-		return " size : " + this.size + " elt : " + this.set;
-	}
+	/*public String toString(){
+		
+		lineNode<F,E> buffer = this.findVisibleEq(true);
+		
+		String str = " size : " + this.size + " elt : " + this.set;
+		
+		if(buffer == null){
+			return str + " All Hidden ";
+		}
+		
+		for (int i = 0; i < buffer.eQsize.s; i++) {
+			str += "\n Set : " + buffer.set.toString() + " Covered by column :" + buffer.coveredByColumnCover;
+			buffer = buffer.nextEq;
+			
+		}
+		
+		return str;
+	}*/
 
 }
 

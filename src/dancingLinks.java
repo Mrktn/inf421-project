@@ -137,7 +137,7 @@ public class dancingLinks<F extends List<E>, E extends Comparable<E>> extends dt
 		this.U = that;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public String toString(){
 		
 		String str = "\n";
@@ -148,7 +148,7 @@ public class dancingLinks<F extends List<E>, E extends Comparable<E>> extends dt
 		dtNode lbuffer = this;
 		dtNode cbuffer = this; 
 		
-		byte size = 1;
+		int size = 1;
 		
 		while(lbuffer.D != this){
 			lbuffer = lbuffer.D;
@@ -171,7 +171,10 @@ public class dancingLinks<F extends List<E>, E extends Comparable<E>> extends dt
 			str += "\n";
 		}
 		
-		str += size;
+		if(size == 1)
+			str = "Empty";
+		else
+			str += size;
 				
 		
 		return str;
@@ -196,6 +199,6 @@ public class dancingLinks<F extends List<E>, E extends Comparable<E>> extends dt
 				return T;
 		}
 		return null;
-	}
+	}*/
 	
 }
