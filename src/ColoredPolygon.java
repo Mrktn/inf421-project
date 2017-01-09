@@ -112,7 +112,7 @@ public class ColoredPolygon implements List<Pair>
         return ints;
     }
 
-    // Faut pas essayer de comprendre, je prends une string de la forme
+    // Je prends une string de la forme
     // "[(0,0), (1,0), etc...]" qui code les coins haut-gauche des carrés 1x1 qui constituent le polyomino
     // et j'en fais un objet de type ColoredPolygon (couleur aléatoire)
     public static ColoredPolygon loadFromString(String s)
