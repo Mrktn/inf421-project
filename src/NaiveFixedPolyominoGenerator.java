@@ -14,7 +14,9 @@ public class NaiveFixedPolyominoGenerator
              - Que les polyominos découverts jusqu'alors sont stockés dans discovered
              - Que le polyomino qu'on a déjà construit (accumulé) a pour valeur val dans mon codage
         */
-    private static void genpolfixed(int n, int k, int miny, HashSet<Pair> vois, boolean[][] checked, HashSet<BigInteger> discovered, BigInteger val, AdjacencyList[][] adjacency)
+    private static void genpolfixed(int n, int k, int miny, HashSet<Pair> vois, boolean[][] checked,
+                                    HashSet<BigInteger> discovered, BigInteger val,
+                                    AdjacencyList[][] adjacency)
     {
         /* S'il ne reste aucun bloc à placer, on va regarder si miny > 0. Si c'est le cas, c'est qu'on
            peut translater le polyomino vers le haut, ce qu'on fait puisque on cherche les polyominos à translation près.
