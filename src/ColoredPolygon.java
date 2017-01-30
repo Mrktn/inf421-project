@@ -196,15 +196,13 @@ public class ColoredPolygon implements List<Pair>
     public void rotate90()
     {
         int m = 0;
-        for(int i = 0; i < xcoords.length; ++i)
-        {
+        for(int i = 0; i < xcoords.length; ++i) {
             int y = ycoords[i];
             ycoords[i] = -xcoords[i];
             if(ycoords[i] <= m)
                 m = ycoords[i];
             xcoords[i] = y;
         }
-
         this.translate(0, -m);
     }
 
